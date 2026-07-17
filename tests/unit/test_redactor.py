@@ -166,7 +166,7 @@ class TestAWSAccessKeyRedaction:
 
 
 class TestGCPAPIKeyRedaction:
-    GCP_KEY = "AIzaSyTEST-FAKE-KEY-NOT-REAL-xxxxxxxxxxx"
+    GCP_KEY = "FAKE_GOOGLE_API_KEY_FOR_TESTING"
 
     def test_gcp_key_in_log(self, redactor: OfflineRedactor) -> None:
         text = f"GCP API Key: {self.GCP_KEY}"
@@ -404,7 +404,7 @@ class TestSampleLogFiles:
         "10.0.3.22",
         "cache-admin@project-prod.iam.gserviceaccount.com",
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",  # JWT fragment in token=
-        "AIzaSyTEST-FAKE-KEY-NOT-REAL-xxxxxxxxxxx",
+        "FAKE_GOOGLE_API_KEY_FOR_TESTING",
         "sre-lead@company.com",
         "platform-lead@company.com",
         "10.0.3.1",
