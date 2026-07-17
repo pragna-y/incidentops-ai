@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  # ---------------------------------------------------------------------------
+  # Runbook MCP Server
+  # Serves SRE runbooks as MCP tools over SSE transport on port 8090.
+  # The app container uses the MCP stdio transport by default (spawns this
+  # server as a subprocess). Use this service for standalone HTTP access
+  # or to run the server persistently alongside the app.
+  # ---------------------------------------------------------------------------
+  mcp-server:
+    build:
+      context: .
+      dockerfile: docker/mcp.Dockerfile
+    container_name: incidentops-mcp
+    ports:
+      - "8090:8090"
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8090/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # IncidentOps AI — Main Application
+  # Run `incidentops triage` or `incidentops analyze` commands.
+  # Override CMD to pass a specific command:
+  #   docker compose run app triage --log sample_logs/db_pool_exhaustion.log
+  # ---------------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+    container_name: incidentops-app
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    environment:
+      # Required for the analyze command (ADK agents)
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      # Point to containerised MCP server for SSE transport
+      - INCIDENTOPS_RUNBOOK_SERVER_URL=http://mcp-server:8090
+      - INCIDENTOPS_OUTPUT_DIR=/app/output
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Mount output directory for report persistence
+      - ./output:/app/output
+      # Mount sample logs (read-only)
+      - ./sample_logs:/app/sample_logs:ro
+    stdin_open: true
+    tty: true
+    # Default: show help. Override at runtime:
+    #   docker compose run app triage --log sample_logs/db_pool_exhaustion.log
+    command: ["--help"]

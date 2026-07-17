@@ -1,0 +1,43 @@
+2024-01-15 14:00:00 INFO  [jvm-metrics] JVM metrics collection started — node=mem-api-7d9f8b (10.0.3.22)
+2024-01-15 14:00:00 INFO  [jvm-metrics] Heap baseline: 1.8GB / 4.0GB (45%) — GC overhead: 2%
+2024-01-15 14:00:00 INFO  [cache-service] Session cache initialized — 10.0.3.22:6379
+  Cache admin: cache-admin@project-prod.iam.gserviceaccount.com
+2024-01-15 14:01:00 WARN  [jvm-metrics] Heap utilization rising — 2.1GB / 4.0GB (52%)
+2024-01-15 14:02:00 WARN  [jvm-metrics] Heap: 2.5GB / 4.0GB (62%) — GC pause time: 320ms
+2024-01-15 14:02:30 WARN  [jvm-metrics] Heap: 2.8GB / 4.0GB (70%) — GC overhead increasing: 8%
+  Minor GC frequency: 1 per 45s (baseline: 1 per 3min)
+2024-01-15 14:03:00 WARN  [jvm-metrics] GC pause time: 1.1s — threshold: 500ms
+  [GC (Allocation Failure) [PSYoungGen: 1048576K->0K(1572864K)] 2883584K->2720000K(4194304K) 1.103s]
+2024-01-15 14:03:30 ERROR [jvm-metrics] Heap: 3.1GB / 4.0GB (77%) — suspected memory leak
+  Pattern: heap usage not recovering after GC cycles
+  Node: 10.0.3.22 — reported by metrics-collector@internal.svc
+2024-01-15 14:04:00 ERROR [jvm-metrics] Heap: 3.4GB / 4.0GB (85%) — GC overhead: 35%
+  [GC (Allocation Failure) [PSYoungGen: 0K->0K(1572864K)] 3500000K->3400000K(4194304K) 2.218s]
+  System is spending 35% of CPU time in garbage collection
+2024-01-15 14:04:30 ERROR [cache-service] Emergency cache eviction triggered — 10.0.3.22:6379
+  Cache token: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYWNoZS1hZG1pbiIsInJvbGUiOiJvcHMiLCJleHAiOjE3MDUzMTYwMDB9.cache_admin_sig_xYz123
+  Evicting LRU sessions for users on 10.0.3.22
+2024-01-15 14:04:45 ERROR [jvm-metrics] Heap: 3.7GB / 4.0GB (92%) — CRITICAL threshold
+2024-01-15 14:05:00 CRITICAL [app-server] java.lang.OutOfMemoryError: Java heap space
+  at com.company.cache.SessionStore.allocateBuffer(SessionStore.java:142)
+  at com.company.api.SessionManager.createSession(SessionManager.java:89)
+  at com.company.api.UserController.login(UserController.java:54)
+  Thread: http-nio-8080-exec-47
+2024-01-15 14:05:01 CRITICAL [app-server] java.lang.OutOfMemoryError: Java heap space
+  at com.company.cache.SessionStore.allocateBuffer(SessionStore.java:142)
+  Thread: http-nio-8080-exec-48
+2024-01-15 14:05:05 CRITICAL [k8s-controller] Pod OOMKilled — mem-api-7d9f8b-xk2p9
+  Namespace: production
+  Node: 10.0.3.22
+  Memory limit: 4Gi — Usage at kill: 3.98Gi
+  GCP Service Key: AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPc3bL0z_A
+2024-01-15 14:05:06 ERROR [k8s-controller] Pod restart initiated — mem-api-7d9f8b-xk2p9
+  Controller: k8s-ctrl@production.svc (10.0.3.1)
+2024-01-15 14:05:07 CRITICAL [alerting] Memory leak incident triggered — P-MEM-20240115-003
+  Affected pod: mem-api-7d9f8b-xk2p9 on 10.0.3.22
+  Incident token: secret=mem-leak-tkn-a1b2c3d4e5f6g7h8i9j0klmnop
+  Report to: sre-lead@company.com
+  Escalate to: platform-lead@company.com
+2024-01-15 14:05:10 INFO  [k8s-controller] Replacement pod mem-api-7d9f8b-nl8q7 scheduled on 10.0.3.23
+2024-01-15 14:05:30 INFO  [health-check] New pod mem-api-7d9f8b-nl8q7 — readiness probe PASSED
+2024-01-15 14:05:35 INFO  [load-balancer] Traffic restored to 10.0.3.23:8080 — 10.0.3.22 drained

@@ -1,0 +1,38 @@
+2024-01-15 11:40:00 INFO  [metrics-agent] Metrics collection started — host=compute-prod-03 (10.0.2.15)
+2024-01-15 11:40:00 INFO  [metrics-agent] Baseline CPU: 32% — normal operating range
+2024-01-15 11:40:00 INFO  [metrics-agent] Active threads: 85/200 — api-server on 10.0.2.15:8080
+2024-01-15 11:43:00 INFO  [deploy-service] Rolling deployment started — image=api-server:v2.4.1
+  Deployed by: deploy-bot@ci-system.internal
+2024-01-15 11:44:00 WARN  [metrics-agent] CPU utilization elevated — 10.0.2.15: 62% (threshold: 75%)
+2024-01-15 11:44:30 WARN  [metrics-agent] CPU utilization rising — 10.0.2.15: 74% — monitoring closely
+2024-01-15 11:45:00 WARN  [metrics-agent] CPU THRESHOLD BREACHED — 10.0.2.15: 79%
+  Top consumers: java (pid=12345, cpu=47%), node (pid=12399, cpu=24%)
+2024-01-15 11:45:05 ERROR [request-router] Request queue depth: 892 — threshold: 500
+  Backing off connections from 203.0.113.42
+  Client identity: engineer@ops-team.internal
+2024-01-15 11:45:08 ERROR [api-server] Thread pool saturation — active_threads=178/200 on 10.0.2.15
+2024-01-15 11:45:10 WARN  [metrics-agent] CPU sustained spike — 10.0.2.15: 89% for 90 seconds
+2024-01-15 11:45:12 ERROR [auth-middleware] Token refresh rejected — system under load
+  Client: 198.51.100.7
+  Auth header: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5OTksInJvbGUiOiJhZG1pbiIsImV4cCI6MTcwNTMxMjAwMH0.dBjftJeZ4CVP-mB92K8vZkCf5GnB0bUWODU
+  User: jane.smith@company.com
+2024-01-15 11:45:14 ERROR [load-balancer] 502 Bad Gateway — upstream timeout from 10.0.2.15:8080
+  Routing failover to 10.0.2.16:8080 (standby)
+2024-01-15 11:45:15 CRITICAL [metrics-agent] CPU CRITICAL — 10.0.2.15: 97%
+  Top processes by CPU:
+    java     pid=12345   cpu=51%  mem=2.1GB
+    node     pid=12399   cpu=28%  mem=412MB
+    python   pid=14022   cpu=12%  mem=289MB
+2024-01-15 11:45:16 ERROR [api-server] Thread pool EXHAUSTED — active_threads=200/200
+  New requests rejected — HTTP 503 returned to all clients
+  Service config: api_key=sk-prod-a1b2c3d4e5f6789abcdef012345 max_threads=200
+2024-01-15 11:45:18 ERROR [tracing-service] Trace export failed — upstream 10.0.2.20:4317 unreachable
+2024-01-15 11:45:20 CRITICAL [alerting] CPU spike incident triggered — P-CPU-20240115-007
+  Integration key: secret=pagerduty-rj4k2m8x9p3n7q1t5v6w0y
+  On-call engineer: jane.smith@company.com
+  On-call phone contact registered from: 10.0.0.5
+2024-01-15 11:45:22 INFO  [circuit-breaker] Circuit OPEN for api-server — 10.0.2.15 isolated
+  Notify: platform-team@company.com
+2024-01-15 11:45:25 INFO  [load-balancer] Traffic re-routed to standby pool
+  Primary: 10.0.2.15 (ISOLATED), Standby: 10.0.2.16, 10.0.2.17
+2024-01-15 11:45:30 INFO  [alerting] Alert dispatched to on-call — ETA acknowledgment: 5 min

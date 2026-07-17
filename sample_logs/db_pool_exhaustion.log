@@ -1,0 +1,40 @@
+2024-01-15 09:20:00 INFO  [api-gateway] Service started on 10.0.0.10:8080 — environment=production
+2024-01-15 09:20:01 INFO  [db-service] HikariCP pool initialized — pool.name=ProductionPool max=50 min=5
+2024-01-15 09:22:45 INFO  [api-gateway] Incoming request from 192.168.1.45 — user=john.doe@acme.com
+2024-01-15 09:22:46 INFO  [order-service] Processing order #ORD-88821 for user 192.168.1.45
+2024-01-15 09:23:00 INFO  [db-service] Query completed in 42ms — pool_active=12/50
+2024-01-15 09:23:08 WARN  [db-service] HikariCP pool utilization rising — active=38/50 (76%)
+2024-01-15 09:23:09 WARN  [api-gateway] Latency P99 = 820ms — threshold=500ms
+2024-01-15 09:23:10 ERROR [auth-service] Token validation failed for request from 192.168.10.5
+  Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyX2FkbWluXzk5OSIsImlhdCI6MTcwNTMwNDAwMCwiZXhwIjoxNzA1MzkwNDAwfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV
+  User: admin@acme-internal.com
+2024-01-15 09:23:11 ERROR [db-service] Unable to acquire JDBC Connection — timeout exceeded
+  org.springframework.jdbc.CannotGetJdbcConnectionException: Failed to obtain JDBC Connection
+  Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException
+  Target DB host: 10.0.1.200:5432
+2024-01-15 09:23:12 WARN  [db-service] HikariCP — pool_active=48/50 (96%) — waiting_threads=8
+2024-01-15 09:23:13 ERROR [order-service] Failed to persist order #ORD-88821 — DB unavailable
+  Retry attempt 1 of 3 — connecting to 10.0.1.200:5432
+2024-01-15 09:23:14 ERROR [order-service] Failed to persist order #ORD-88821 — DB unavailable
+  Retry attempt 2 of 3 — connecting to 10.0.1.200:5432
+  Internal service token: token=svc-order-tkn-aBcDeFgH1234567890
+2024-01-15 09:23:15 CRITICAL [db-service] HikariCP — pool_active=50/50 (100%) — POOL EXHAUSTED
+  Waiting threads: 23 — Connection acquisition timeout: 30000ms
+2024-01-15 09:23:15 ERROR [user-service] Database write failed for customer 192.168.1.89
+  Error: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Connection pool exhausted
+  database_url=jdbc:postgresql://db.prod.internal:5432/users
+  password=Sup3rS3cr3tPa$$w0rd!
+2024-01-15 09:23:16 ERROR [session-service] Cannot refresh session — DB connection unavailable
+  session_owner=sre-oncall@company.com (from 10.0.5.21)
+  api_key=AKIAIOSFODNN7EXAMPLE
+2024-01-15 09:23:17 CRITICAL [alerting] INCIDENT TRIGGERED — DB connection pool exhausted
+  Affected services: order-service, user-service, session-service, auth-service
+  Runbook: https://wiki.internal/runbooks/db-pool-exhaustion
+  PagerDuty webhook secret=pd-incident-webhook-secret-7f8g9h0j1k2l
+  Alert owner: sre-lead@company.com
+2024-01-15 09:23:18 ERROR [load-balancer] 503 Service Unavailable — backend 10.0.1.200:8080 unresponsive
+2024-01-15 09:23:19 ERROR [health-check] Health probe FAILED — /health on 10.0.1.200:8080 returned HTTP 503
+2024-01-15 09:23:20 WARN  [circuit-breaker] Opening circuit for db-service — consecutive_failures=5
+  Notify: db-admin@company.com
+2024-01-15 09:23:25 INFO  [alerting] PagerDuty alert P-INC-20240115-001 created — severity=critical
+2024-01-15 09:23:30 INFO  [api-gateway] Rejecting 95% of traffic due to degraded backend health
