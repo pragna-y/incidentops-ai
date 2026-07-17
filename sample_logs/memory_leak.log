@@ -30,7 +30,7 @@
   Namespace: production
   Node: 10.0.3.22
   Memory limit: 4Gi — Usage at kill: 3.98Gi
-  GCP Service Key: AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPc3bL0z_A
+  GCP Service Key: AIzaSyTEST-FAKE-KEY-NOT-REAL-xxxxxxxxxxx
 2024-01-15 14:05:06 ERROR [k8s-controller] Pod restart initiated — mem-api-7d9f8b-xk2p9
   Controller: k8s-ctrl@production.svc (10.0.3.1)
 2024-01-15 14:05:07 CRITICAL [alerting] Memory leak incident triggered — P-MEM-20240115-003
