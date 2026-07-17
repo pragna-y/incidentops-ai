@@ -404,7 +404,7 @@ class TestSampleLogFiles:
         "10.0.3.22",
         "cache-admin@project-prod.iam.gserviceaccount.com",
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",  # JWT fragment in token=
-        "AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPc3bL0z_A",
+        "AIzaSyTEST-FAKE-KEY-NOT-REAL-xxxxxxxxxxx",
         "sre-lead@company.com",
         "platform-lead@company.com",
         "10.0.3.1",
