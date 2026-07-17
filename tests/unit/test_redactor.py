@@ -166,7 +166,7 @@ class TestAWSAccessKeyRedaction:
 
 
 class TestGCPAPIKeyRedaction:
-    GCP_KEY = "AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPc3bL0z_A"
+    GCP_KEY = "AIzaSyTEST-FAKE-KEY-NOT-REAL-xxxxxxxxxxx"
 
     def test_gcp_key_in_log(self, redactor: OfflineRedactor) -> None:
         text = f"GCP API Key: {self.GCP_KEY}"
